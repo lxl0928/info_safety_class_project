@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>信息安全实验课项目</title>
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">信息安全实验项目</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="/digital-forensics">数字取证</a></li>
+          <li><a href="/digital-signature">数字签名</a></li>
+          <li><a href="/digital-certificate">数字认证</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      {% block content %}{% end %}
+    </div>
+    <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {% block script %}{% end %}
+  </body>
+</html>

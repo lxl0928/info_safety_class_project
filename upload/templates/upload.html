@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+  <hr />
+  <h1>信息安全课程项目</h1>
+  <hr />
+  <h3>请在下面选择文件上传</h3>
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="input-file"></label>
+        <input style="padding-left: 620px; " name="file" type="file" id="input-file">
+      </div>
+      <button class="btn btn-success" type="submit">提交</button>
+    </form>
+    <div>
+        {% raw parse_info %}
+    </div>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </body>
+</html>

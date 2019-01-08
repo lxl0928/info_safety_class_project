@@ -1,0 +1,3 @@
+{% for key, value in sorted(list(infos.items())) %}
+<p class="text-primary"><b>{{ key }}</b>：<b><code>{% raw value %}</code></b></p>
+{% end %}

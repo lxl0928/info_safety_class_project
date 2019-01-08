@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="jumbotron">
+    <h1 class="text-center">信息安全实验演示 - 数字签名</h1>
+    <h3 class="text-center text-danger">通过选择文件以及加密算法来获取公钥，私钥以及签名文件。</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <form enctype="multipart/form-data" action="POST" id="upload-form">
+      <input class="sr-only" id="input-file" type="file" name="file">
+      <button class="btn btn-success" id="select-file" type="button">选择文件</button>
+      <button class="btn btn-primary" id="upload-file" type="button">上传文件</button>
+      <span id="filename"></span>
+      <br><br>
+      <select class="form-control" name="algorithm" id="select-algorithm">
+        <option value="rsa">RSA</option>
+        <option value="dsa">DSA</option>
+      </select><br>
+      <a class="btn btn-warning" href="#" id="get-pub-key" type="button">下载公钥文件</a>
+      <a class="btn btn-danger" href="#" id="get-pri-key" type="button">下载私钥文件</a>
+      <a class="btn btn-info" href="#" id="get-sign" type="button">下载签名文件</a>
+    </form>
+  </div>
+</div>
+{% end %}
+{% block script %}
+<script>
+$("#select-file").click(function () {
+  $("#input-file").click();
+});
+$("#input-file").change(function () {
+  $("#filename").html("<span class='label label-info'>" + $(this).val() + "</span>");
+});
+$("#upload-file").click(function () {
+  $.ajax({
+    url: "/digital-signature?algorithm=" + $("#select-algorithm").val(),
+    type: "POST",
+    data: new FormData($("#upload-form")[0]),
+    cache: false,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      obj = response;
+      $("#get-pub-key").attr("href", obj.pubkey);
+      $("#get-pri-key").attr("href", obj.prikey);
+      $("#get-sign").attr("href", obj.sign);
+      $("#filename").html($("#filename").html() + " <span class='label label-success'>上传成功，请下载相关文件</span>");
+    },
+  });
+});
+</script>
+{% end %}

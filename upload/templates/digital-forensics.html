@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="jumbotron">
+    <h1 class="text-center">信息安全实验演示 - 数字取证</h1>
+    <h3 class="text-center text-danger">可通过上传PDF文件，MP3文件以及JPG等图片文件，来获取该文件的元数据信息。</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <form enctype="multipart/form-data" action="POST" id="upload-form">
+      <input class="sr-only" id="input-file" type="file" name="file">
+      <button class="btn btn-success" id="select-file" type="button">选择文件</button><br><br>
+      <button class="btn btn-primary" id="get-file-metadata" type="button">获取信息</button>
+    </form>
+  </div>
+  <div class="col-md-10">
+    <div class="panel panel-primary">
+      <div class="panel-heading text-center" id="filename"><b>文件名</b></div>
+      <div class="panel-body" id="file-metadata">
+        文件元数据信息
+      </div>
+    </div>
+  </div>
+</div>
+{% end %}
+{% block script %}
+<script>
+$("#select-file").click(function () {
+  $("#input-file").click();
+});
+$("#input-file").change(function () {
+  $("#filename").html("<b>" + $(this).val() + "</b>");
+  $("#file-metadata").html("<h3 class='text-center'>请点击<code>获取信息</code>来获取元数据</h3>");
+});
+$("#get-file-metadata").click(function () {
+  $.ajax({
+    url: "/digital-forensics",
+    type: "POST",
+    data: new FormData($("#upload-form")[0]),
+    cache: false,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      $("#file-metadata").html(response);
+    },
+  });
+});
+</script>
+{% end %}

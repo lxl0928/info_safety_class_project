@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="jumbotron">
+    <h1 class="text-center">信息安全实验演示 - 数字认证</h1>
+    <h3 class="text-center text-danger">通过选择文件，公钥以及签名来确认是否匹配。</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <form enctype="multipart/form-data" action="POST" id="upload-form">
+      <select class="form-control" id="select-algorithm" name="algorithm">
+        <option value="rsa">RSA</option>
+        <option value="dsa">DSA</option>
+      </select><br>
+      <input class="sr-only" id="input-file" type="file" name="file">
+      <button class="btn btn-success col-md-3" id="select-file" type="button">选择文件</button>
+      <span id="show-file"></span><br><br>
+      <input class="sr-only" id="input-pub" type="file" name="pub">
+      <button class="btn btn-success col-md-3" id="select-pub" type="button">选择公钥</button>
+      <span id="show-pub"></span><br><br>
+      <input class="sr-only" id="input-sign" type="file" name="sign">
+      <button class="btn btn-success col-md-3" id="select-sign" type="button">选择签名</button>
+      <span id="show-sign"></span><br><br>
+      <button class="btn btn-primary col-md-3" id="upload-file" type="button">上传文件</button>
+      <span id="result"></span><br><br>
+    </form>
+  </div>
+</div>
+{% end %}
+{% block script %}
+<script>
+$("#select-file").click(function () {$("#input-file").click();});
+$("#select-pub").click(function () {$("#input-pub").click();});
+$("#select-sign").click(function () {$("#input-sign").click();});
+
+$("#input-file").change(function () {
+  $("#show-file").html("<span class='label label-info'>" + $(this).val() + "</span>");
+});
+$("#input-pub").change(function () {
+  $("#show-pub").html("<span class='label label-info'>" + $(this).val() + "</span>");
+});
+$("#input-sign").change(function () {
+  $("#show-sign").html("<span class='label label-info'>" + $(this).val() + "</span>");
+});
+
+$("#upload-file").click(function () {
+  var form = new FormData();
+  form.append("file", $("#input-file")[0].files[0]);
+  form.append("pub", $("#input-pub")[0].files[0]);
+  form.append("sign", $("#input-sign")[0].files[0]);
+  $.ajax({
+    url: "/digital-certificate?algorithm=" + $("#select-algorithm").val(),
+    type: "POST",
+    data: form,
+    cache: false,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      obj = response;
+      if (obj.status === 200) {
+        $("#result").html("<span class='label label-success'>认证成功</span>");
+      } else {
+        $("#result").html("<span class='label label-danger'>认证失败</span>");
+      }
+    },
+  });
+});
+</script>
+{% end %}

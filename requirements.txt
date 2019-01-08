@@ -1,0 +1,6 @@
+fpdf==1.7.2
+PyPDF2==1.26.0
+tinytag==0.13.1
+tornado==4.3
+pycrypto
+pyasn1
